@@ -53,10 +53,10 @@ float4 PS(VOut pIn) : SV_TARGET
 
      //TODO change this from a half-lambert into a toon shader
      float d = dot(n, c_lightDir);
-     d = 0.5f * d + 0.5f;
-     d = d * d;
+     float toonLighting = step(0.0, d);
+     float toonShadows = max(0.5, step(0.75, d));
 
-     float4 light = float4(d * c_lightColor, 1.0f);
+     float4 light = float4(toonLighting * c_lightColor * toonShadows, 1.0f);
 
      return diffuseTex * light;
 }
